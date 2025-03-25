@@ -1,0 +1,32 @@
+# .gitignore
+__pycache__/
+*.py[cod]
+*$py.class
+.env
+venv/
+.idea/
+.vscode/
+*.so
+.Python
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+*.egg-info/
+
+# Project specific
+intersection/episode_routes.rou.xml
+models/*
+!models/.gitkeep
+data/*
+!data/.gitkeep
+results/*
+!results/.gitkeep
