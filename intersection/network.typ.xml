@@ -1,0 +1,4 @@
+<types>
+    <type id="car" priority="1" numLanes="3" speed="13.89"/>
+    <type id="pedestrian" priority="1" numLanes="1" speed="1.39" allow="pedestrian"/>
+</types>

@@ -16,7 +16,9 @@ from utils import import_train_configuration, set_sumo, set_train_path
 if __name__ == "__main__":
 
     print(os.getcwd())  # Print the current working directory
-    config = import_train_configuration(config_file='../configs/training_settings.ini')
+    project_root = os.path.dirname(os.path.dirname(__file__))  # go up from /src to root
+    config_path = os.path.join(project_root, 'configs', 'training_settings.ini')
+    config = import_train_configuration(config_file=config_path)
     sumo_cmd = set_sumo(config['gui'], config['sumocfg_file_name'], config['max_steps'])
     path = set_train_path(config['models_path_name'])
 
@@ -81,7 +83,11 @@ if __name__ == "__main__":
 
     Model.save_model(path)
 
-    copyfile(src='training_settings.ini', dst=os.path.join(path, 'training_settings.ini'))
+    copyfile(
+    src=os.path.join("configs", "training_settings.ini"),
+    dst=os.path.join(path, "training_settings.ini")
+    )
+
 
     Visualization.save_data_and_plot(data=Simulation.reward_store, filename='reward', xlabel='Episode', ylabel='Cumulative negative reward')
     Visualization.save_data_and_plot(data=Simulation.cumulative_wait_store, filename='delay', xlabel='Episode', ylabel='Cumulative delay (s)')

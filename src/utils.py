@@ -10,6 +10,7 @@ def import_train_configuration(config_file):
     """
     content = configparser.ConfigParser()
     content.read(config_file)
+    print("Sections found:", content.sections())
     config = {}
     config['gui'] = content['simulation'].getboolean('gui')
     config['total_episodes'] = content['simulation'].getint('total_episodes')
