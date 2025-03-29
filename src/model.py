@@ -63,7 +63,18 @@ class TrainModel:
         Save the current model in the folder as h5 file and a model architecture summary as png
         """
         self._model.save(os.path.join(path, 'trained_model.h5'))
-        plot_model(self._model, to_file=os.path.join(path, 'model_structure.png'), show_shapes=True, show_layer_names=True)
+ 
+        try:
+            plot_model(
+                self._model,
+                to_file=os.path.join(path, 'model_structure.png'),
+                show_shapes=True,
+                show_layer_names=True
+            )
+            print("Model architecture plotted successfully! ✅")
+        except Exception as e:
+            print(f"Skipping model plot due to: {e}")
+
 
 
     @property
