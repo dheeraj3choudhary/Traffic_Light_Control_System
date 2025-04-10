@@ -3,6 +3,8 @@ import numpy as np
 import random
 import timeit
 import os
+from model import TrainModel
+
 
 # phase codes based on environment.net.xml
 PHASE_NS_GREEN = 0  # action 0 code 00
@@ -16,7 +18,7 @@ PHASE_EWL_YELLOW = 7
 
 
 class Simulation:
-    def __init__(self, Model, Memory, TrafficGen, sumo_cmd, gamma, max_steps, green_duration, yellow_duration, num_states, num_actions, training_epochs):
+    def __init__(self, Model, Memory, TrafficGen, sumo_cmd, gamma, max_steps, green_duration, yellow_duration, num_states, num_actions, training_epochs, target_update_freq, num_layers, width_layers, batch_size, learning_rate):
         self._Model = Model
         self._Memory = Memory
         self._TrafficGen = TrafficGen
@@ -32,6 +34,18 @@ class Simulation:
         self._cumulative_wait_store = []
         self._avg_queue_length_store = []
         self._training_epochs = training_epochs
+        self._TargetModel = TrainModel(
+            num_layers=num_layers,
+            width=width_layers,
+            batch_size=batch_size,
+            learning_rate=learning_rate,
+            input_dim=num_states,
+            output_dim=num_actions
+        )
+        self._TargetModel._model.set_weights(self._Model._model.get_weights())
+        self._target_update_freq = target_update_freq
+        self._target_sync_steps = []
+
 
 
     def run(self, episode, epsilon):
@@ -63,7 +77,6 @@ class Simulation:
             current_state = self._get_state()
 
             # calculate reward of previous action: (change in cumulative waiting time between actions)
-            # waiting time = seconds waited by a car since the spawn in the environment, cumulated for every car in incoming lanes
             current_total_wait = self._collect_waiting_times()
             reward = old_total_wait - current_total_wait
 
@@ -71,24 +84,20 @@ class Simulation:
             if self._step != 0:
                 self._Memory.add_sample((old_state, old_action, reward, current_state))
 
-            # choose the light phase to activate, based on the current state of the intersection
+            # choose the light phase to activate
             action = self._choose_action(current_state, epsilon)
 
-            # if the chosen phase is different from the last phase, activate the yellow phase
             if self._step != 0 and old_action != action:
                 self._set_yellow_phase(old_action)
                 self._simulate(self._yellow_duration)
 
-            # execute the phase selected before
             self._set_green_phase(action)
             self._simulate(self._green_duration)
 
-            # saving variables for later & accumulate reward
             old_state = current_state
             old_action = action
             old_total_wait = current_total_wait
 
-            # saving only the meaningful reward to better see if the agent is behaving correctly
             if reward < 0:
                 self._sum_neg_reward += reward
 
@@ -102,6 +111,11 @@ class Simulation:
         for _ in range(self._training_epochs):
             self._replay()
         training_time = round(timeit.default_timer() - start_time, 1)
+
+        # 🔁 NEW: Sync target model every few episodes
+        if episode % self._target_update_freq == 0:
+            self._TargetModel._model.set_weights(self._Model._model.get_weights())
+            self._target_sync_steps.append(episode)
 
         return simulation_time, training_time
 
@@ -266,7 +280,7 @@ class Simulation:
 
             # prediction
             q_s_a = self._Model.predict_batch(states)  # predict Q(state), for every sample
-            q_s_a_d = self._Model.predict_batch(next_states)  # predict Q(next_state), for every sample
+            q_s_a_d = self._TargetModel.predict_batch(next_states)  #  Prediction from target network for next states
 
             # setup training arrays
             x = np.zeros((len(batch), self._num_states))

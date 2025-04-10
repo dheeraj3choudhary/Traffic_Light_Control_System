@@ -3,14 +3,34 @@ from sumolib import checkBinary
 import os
 import sys
 
+# if __name__ == "__main__":
+#     import os
+#     project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+#     config_file = os.path.join(project_root, "configs", "training_settings.ini")
+
+#     print("📄 Loading config from:", config_file)
+
+#     parser = configparser.ConfigParser()
+#     parser.read(config_file)
+
+#     print("📦 Sections loaded:", parser.sections())
+#     print("✅ target_update_freq (raw):", parser["agent"].get("target_update_freq"))
+
+
 
 def import_train_configuration(config_file):
     """
     Read the config file regarding the training and import its content
     """
+    import os
     content = configparser.ConfigParser()
-    content.read(config_file)
+    
+    # Use absolute path to ensure loading succeeds
+    config_file_path = os.path.abspath(config_file)
+    content.read(config_file_path)
+
     print("Sections found:", content.sections())
+
     config = {}
     config['gui'] = content['simulation'].getboolean('gui')
     config['total_episodes'] = content['simulation'].getint('total_episodes')
@@ -28,10 +48,14 @@ def import_train_configuration(config_file):
     config['num_states'] = content['agent'].getint('num_states')
     config['num_actions'] = content['agent'].getint('num_actions')
     config['gamma'] = content['agent'].getfloat('gamma')
+    config['target_update_freq'] = content['agent'].getint('target_update_freq')  # ← This must work now!
     config['models_path_name'] = content['dir'].get('models_path_name')
     config['sumocfg_file_name'] = content['dir'].get('sumocfg_file_name')
 
+    print("✅ target_update_freq loaded as:", config['target_update_freq'])  # Debug check
+
     return config
+
 
 
 def import_test_configuration(config_file):
