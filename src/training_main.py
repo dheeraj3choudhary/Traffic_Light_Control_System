@@ -72,7 +72,9 @@ if __name__ == "__main__":
     
     while episode < config['total_episodes']:
         print(f'\n----- Episode {episode+1} of {config["total_episodes"]} -----')
-        epsilon = 1.0 - (episode / config['total_episodes'])
+        # epsilon = 1.0 - (episode / config['total_episodes'])
+        epsilon = max(0.05, 1.0 - episode / config['total_episodes'])
+
         
         simulation_time, training_time = Simulation.run(episode, epsilon)
         
