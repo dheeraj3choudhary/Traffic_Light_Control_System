@@ -24,7 +24,7 @@ var/
 
 # Project specific
 intersection/episode_routes.rou.xml
-models/*
+
 !models/.gitkeep
 data/*
 !data/.gitkeep
@@ -32,3 +32,14 @@ results/*
 !results/.gitkeep
 
 venv_traffic/
+orchestrator
+models/model_2
+models/model_3
+models/model_4
+models/model_5
+models/model_6
+models/model_7
+models/model_8
+models/model_9
+models/model_10
+models/model_11
