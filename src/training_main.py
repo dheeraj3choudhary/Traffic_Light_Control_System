@@ -45,7 +45,9 @@ if __name__ == "__main__":
         path, 
         dpi=96
     )
-        
+    
+    print("🔁 Target Update Freq from config:", config['target_update_freq'])
+       
     Simulation = Simulation(
         Model,
         Memory,
@@ -57,7 +59,12 @@ if __name__ == "__main__":
         config['yellow_duration'],
         config['num_states'],
         config['num_actions'],
-        config['training_epochs']
+        config['training_epochs'],
+        config['target_update_freq'],
+        config['num_layers'],              # 🆕
+        config['width_layers'],            # 🆕
+        config['batch_size'],              # 🆕
+        config['learning_rate']            # 🆕
     )
     
     episode = 0
@@ -65,7 +72,9 @@ if __name__ == "__main__":
     
     while episode < config['total_episodes']:
         print(f'\n----- Episode {episode+1} of {config["total_episodes"]} -----')
-        epsilon = max(0.1, 1 - episode / 200)
+        # epsilon = 1.0 - (episode / config['total_episodes'])
+        epsilon = max(0.05, 1.0 - episode / config['total_episodes'])
+
         
         simulation_time, training_time = Simulation.run(episode, epsilon)
         
@@ -88,7 +97,7 @@ if __name__ == "__main__":
     dst=os.path.join(path, "training_settings.ini")
     )
 
-
+    Visualization.save_data_and_plot(data=Simulation._target_sync_steps,filename='target_syncs',xlabel='Sync Event Index',ylabel='Episode')
     Visualization.save_data_and_plot(data=Simulation.reward_store, filename='reward', xlabel='Episode', ylabel='Cumulative negative reward')
     Visualization.save_data_and_plot(data=Simulation.cumulative_wait_store, filename='delay', xlabel='Episode', ylabel='Cumulative delay (s)')
     Visualization.save_data_and_plot(data=Simulation.avg_queue_length_store, filename='queue', xlabel='Episode', ylabel='Average queue length (vehicles)')
