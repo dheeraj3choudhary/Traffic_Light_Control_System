@@ -286,7 +286,8 @@ Once training is complete, test the model to see how well it performs:
 2. Run the testing script(which is inside src/ ):
    
 ```bash
-python .src/testing_main.py
+cd src
+python testing_main.py
 ```
 
 This will open SUMO-GUI with your trained model controlling the traffic lights. You can observe how the system performs with the trained reinforcement learning model.
