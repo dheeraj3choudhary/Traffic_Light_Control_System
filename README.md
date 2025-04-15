@@ -126,6 +126,8 @@ OR
   ```
   ![image](https://github.com/user-attachments/assets/5ae8132e-fe2e-428a-b40e-2b60f01eb377)
 
+NOTE: Make sure you are using Python 3.10 
+
 
 ## SUMO installation
 
@@ -141,18 +143,26 @@ SUMO is essential for traffic simulation. Install it before proceeding:
 
 3. Add SUMO to your PATH environment variable:
    - Search for "Environment Variables" in Windows search
-   - Set `SUMO_HOME` environment variable to: `C:\path to where you extracted your SUMO directory \sumo-win64-1.2.0\sumo-1.2.0`
   
-   - Edit the "Path" variable and add: `C:\path to where you extracted your SUMO directory \sumo-1.2.0\bin`
-  
+   - In you User Variables - set `SUMO_HOME` environment variable to: `C:\path to where you extracted your SUMO directory \sumo-win64-1.2.0\sumo-1.2.0`
+
      ![image](https://github.com/user-attachments/assets/a1a04b05-9056-447f-a55b-7f5ac685ec45)
 
+       
+   - Now again in User variables edit the "Path" and add: `C:\path to where you extracted your SUMO directory \sumo-1.2.0\bin`
+     
+    ![image](https://github.com/user-attachments/assets/51c1cbfc-06d9-4236-91db-78798c61530b)
+
+   - Now edit the System Variables - "Path" and add: `C:\path to where you extracted your SUMO directory \sumo-1.2.0\bin`
+    
    ![image](https://github.com/user-attachments/assets/238c62d2-0e8f-4180-8662-d55b8de02e30)
+   
 
 
+  
    - Now restart your system to take effect of those variables
 
-4. Now check if SUMO is installed properly
+3. Now check if SUMO is installed properly
 
    ```bash
     sumo --version
@@ -172,6 +182,8 @@ export SUMO_HOME="/usr/share/sumo"
 ```
 
 ## Step 2: Clone the Repository
+
+NOTE: Make sure you clone the repository and SUMO extracted at same root directory
 
 ```bash
 git clone https://github.com/dheeraj3choudhary/Traffic_Light_Control_System.git
@@ -194,11 +206,13 @@ python -m venv venv
 
 # Activate virtual environment
 
-```bash
-
 # On Windows:
+```bash
 venv\Scripts\activate
+```
+
 # On macOS/Linux:
+```bash
 source venv/bin/activate
 ```
 
@@ -208,6 +222,8 @@ source venv/bin/activate
 pip install tensorflow==2.10.0
 pip install -r updated_requirements.txt
 ```
+
+Only reason to install these dependencies separate to mitigate the conflicts 
 
 ## Step 5: Project Structure Verification
 
@@ -267,9 +283,10 @@ Once training is complete, test the model to see how well it performs:
    - Set `model_to_test` to match the model number you want to evaluate (usually the highest number in the `models/` directory)
    - Set `gui = True` to visualize the simulation
 
-2. Run the testing script:
+2. Run the testing script(which is inside src/ ):
+   
 ```bash
-python testing_main.py
+python .src/testing_main.py
 ```
 
 This will open SUMO-GUI with your trained model controlling the traffic lights. You can observe how the system performs with the trained reinforcement learning model.
