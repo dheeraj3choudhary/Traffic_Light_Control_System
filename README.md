@@ -149,6 +149,11 @@ SUMO is essential for traffic simulation. Install it before proceeding:
 
    - Now restart your system to take effect of those variables
 
+4. Now check if SUMO is installed properly
+
+   ```bash
+    sumo --version
+   ```
 ### macOS
 ```bash
 brew install --cask sumo
