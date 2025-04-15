@@ -103,17 +103,51 @@ This guide walks you through setting up and running the Traffic Light Control re
 - SUMO traffic simulator
 - Git
 
+## Python Installation
+
+- Download python 3.10 from [here](https://www.python.org/downloads/release/python-3100/)
+- If you have windows accordingly select which verison
+  
+![image](https://github.com/user-attachments/assets/8c0d35da-503a-4343-a5f1-f020f62149c8)
+
+- Launch the installer
+
+  -  Remember to check the option to "Add python.exe to PATH" and install
+  
+![image](https://github.com/user-attachments/assets/ebee444a-563c-4721-9e57-2e40d6065744)
+
+- Now check if Python 3.10 is installed in your system
+  ```bash
+  py -0
+  ```
+
+  ![image](https://github.com/user-attachments/assets/5ae8132e-fe2e-428a-b40e-2b60f01eb377)
+
+
+## SUMO installation
+
 ## Step 1: Install SUMO
 
 SUMO is essential for traffic simulation. Install it before proceeding:
 
 ### Windows
-1. Download the latest SUMO version from [SUMO's official website](https://www.eclipse.org/sumo/)
-2. Run the installer and follow the prompts
+1. Download the latest SUMO version from [SUMO's official website](https://sumo.dlr.de/releases/1.2.0/)
+2. Select the zip option:
+
+![image](https://github.com/user-attachments/assets/c26ecafe-8443-497e-8e44-6f060af2c12e)
+
 3. Add SUMO to your PATH environment variable:
    - Search for "Environment Variables" in Windows search
-   - Edit the "Path" variable and add: `C:\Program Files (x86)\Eclipse\Sumo\bin`
-   - Set `SUMO_HOME` environment variable to: `C:\Program Files (x86)\Eclipse\Sumo`
+   - Set `SUMO_HOME` environment variable to: `C:\path to where you extracted your SUMO directory \sumo-win64-1.2.0\sumo-1.2.0`
+  
+   - Edit the "Path" variable and add: `C:\path to where you extracted your SUMO directory \sumo-1.2.0\bin`
+  
+     ![image](https://github.com/user-attachments/assets/a1a04b05-9056-447f-a55b-7f5ac685ec45)
+
+   ![image](https://github.com/user-attachments/assets/238c62d2-0e8f-4180-8662-d55b8de02e30)
+
+
+   - Now restart your system to take effect of those variables
 
 ### macOS
 ```bash
@@ -132,7 +166,7 @@ export SUMO_HOME="/usr/share/sumo"
 ## Step 2: Clone the Repository
 
 ```bash
-git clone https://github.com/yourusername/Traffic_Light_Control_System.git
+git clone https://github.com/dheeraj3choudhary/Traffic_Light_Control_System.git
 cd Traffic_Light_Control_System
 ```
 
@@ -140,7 +174,7 @@ cd Traffic_Light_Control_System
 
 ```bash
 # Create virtual environment
-python3.10 -m venv venv
+py -3.10 -m venv venv
 
 # Activate virtual environment
 # On Windows:
@@ -153,7 +187,7 @@ source venv/bin/activate
 
 ```bash
 pip install tensorflow==2.10.0
-pip install -r requirements.txt
+pip install -r updated_requirements.txt
 ```
 
 ## Step 5: Project Structure Verification
@@ -184,7 +218,7 @@ Traffic_Light_Control_System/
 └── requirements.txt
 ```
 
-## Step 6: Training a Model
+## Step 6: Training a Model(Optional since we already trained the model with best performance)
 
 Training a model generates the traffic signal control policy:
 
@@ -205,7 +239,8 @@ During training, you'll see:
 
 Models will be saved in the `models/` directory.
 
-## Step 7: Testing a Model
+## Step 7: Testing a Model(Actually simulates the traffic intersection with the optimal model setting already applied)
+NOTE: if you just want to see the simulation just skip to step 2. below by running the testing_main.py 
 
 Once training is complete, test the model to see how well it performs:
 
@@ -219,6 +254,14 @@ python testing_main.py
 ```
 
 This will open SUMO-GUI with your trained model controlling the traffic lights. You can observe how the system performs with the trained reinforcement learning model.
+
+-  Click on the run button to start the traffic simulation
+
+![image](https://github.com/user-attachments/assets/34e69beb-eb97-4113-8666-8caf452027cd)
+
+
+https://github.com/user-attachments/assets/50262a4b-c592-420a-a6e5-b1607383be22
+
 
 ## Step 8: Understanding the Visualization
 
