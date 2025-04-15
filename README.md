@@ -120,7 +120,10 @@ This guide walks you through setting up and running the Traffic Light Control re
   ```bash
   py -0
   ```
-
+OR
+  ```bash
+  python --version
+  ```
   ![image](https://github.com/user-attachments/assets/5ae8132e-fe2e-428a-b40e-2b60f01eb377)
 
 
@@ -180,8 +183,19 @@ cd Traffic_Light_Control_System
 ```bash
 # Create virtual environment
 py -3.10 -m venv venv
+```
+OR 
+
+if there is only one python version in your system then (which we installed earlier that is Python 3.10)
+
+```bash
+python -m venv venv
+```
 
 # Activate virtual environment
+
+```bash
+
 # On Windows:
 venv\Scripts\activate
 # On macOS/Linux:
